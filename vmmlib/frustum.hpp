@@ -165,7 +165,7 @@ template < typename T >
 Frustum<T>::Frustum( const T fov_y, const T aspect_ratio, const T nearPlane_,
                      const T farPlane_ )
 {
-    _array[2] = std::tan( 0.5 * fov_y * M_PI / 180.0 ) * 0.5;
+    _array[2] = std::tan( 0.5 * fov_y * M_PI / 180.0 ) * nearPlane_;
     _array[3] = -_array[2];
     // depend on _array[2,3]:
     _array[0] = bottom() * aspect_ratio;

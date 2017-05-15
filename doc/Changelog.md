@@ -2,6 +2,10 @@
 
 # git master
 
+* [68](https://github.com/Eyescale/vmmlib/pull/68)
+  Fix Frustum ctor with fovy and aspect ratio where computePerspectiveMatrix()
+  would return wrong results
+
 # Release 1.12 (09-12-2016)
 
 * [62](https://github.com/Eyescale/vmmlib/pull/62)

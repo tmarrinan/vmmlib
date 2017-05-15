@@ -88,3 +88,16 @@ BOOST_AUTO_TEST_CASE( base )
     const vmml::FrustumCullerf fc2( a, b, c, d, e, f, g, h );
     _testCull( fc2 );
 }
+
+BOOST_AUTO_TEST_CASE( fovy_to_projection )
+{
+    const vmml::Frustumf frustum( 45.f, 4.f/3.f, 0.01f, 10.f );
+    const auto projection = frustum.computePerspectiveMatrix();
+
+    // same as glm::perspective(M_PI_4, 4.f/3., 0.01, 10.)
+    BOOST_CHECK_CLOSE(projection(0,0), -1.81066f, 0.0001f );
+    BOOST_CHECK_CLOSE(projection(1,1), -2.414214f, 0.0001f );
+    BOOST_CHECK_CLOSE(projection(2,2), -1.002002f, 0.0001f );
+    BOOST_CHECK_CLOSE(projection(2,3), -0.02002002f, 0.0001f );
+    BOOST_CHECK_CLOSE(projection(3,2), -1.f, 0.0001f );
+}
