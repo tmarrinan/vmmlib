@@ -32,93 +32,90 @@
 #define BOOST_TEST_MODULE matrix
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE( base )
+BOOST_AUTO_TEST_CASE(base)
 {
     vmml::Matrix4d matrix;
-    for( size_t i = 0; i < 16; ++i )
-        if( (i%5) == 0 )
-            BOOST_CHECK_EQUAL( matrix.array[ i ], 1. );
+    for (size_t i = 0; i < 16; ++i)
+        if ((i % 5) == 0)
+            BOOST_CHECK_EQUAL(matrix.array[i], 1.);
         else
-            BOOST_CHECK_EQUAL( matrix.array[ i ], 0. );
+            BOOST_CHECK_EQUAL(matrix.array[i], 0.);
 
-    double data[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-    const vmml::Matrix4d matrix2( data, data + 16 );
+    double data[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    const vmml::Matrix4d matrix2(data, data + 16);
     matrix = matrix2;
-    for( size_t i = 0; i < 16; ++i )
+    for (size_t i = 0; i < 16; ++i)
     {
-        BOOST_CHECK_EQUAL( matrix2.array[ i ], i+1. );
-        BOOST_CHECK_EQUAL( matrix.array[ i ], matrix2.array[ i ] );
+        BOOST_CHECK_EQUAL(matrix2.array[i], i + 1.);
+        BOOST_CHECK_EQUAL(matrix.array[i], matrix2.array[i]);
     }
 }
 
-BOOST_AUTO_TEST_CASE( construction )
+BOOST_AUTO_TEST_CASE(construction)
 {
-    vmml::Matrix4f m1( vmml::Quaternionf(), vmml::Vector3f( 1.f, 2.f, 3.f ));
-    const float data[] = { 1, 0, 0, 0,
-                           0, 1, 0, 0,
-                           0, 0, 1, 0,
-                           1.f, 2.f, 3.f, 1 };
-    BOOST_CHECK_EQUAL( m1, vmml::Matrix4f( data, data + 16 ));
+    vmml::Matrix4f m1(vmml::Quaternionf(), vmml::Vector3f(1.f, 2.f, 3.f));
+    const float data[] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1.f, 2.f, 3.f, 1};
+    BOOST_CHECK_EQUAL(m1, vmml::Matrix4f(data, data + 16));
 }
 
-BOOST_AUTO_TEST_CASE( lookat )
+BOOST_AUTO_TEST_CASE(lookat)
 {
-    const vmml::Vector3f eye( 1, 2, 3 );
-    const vmml::Vector3f lookAt( eye + vmml::Vector3f( 0, 1, 0 ));
-    const vmml::Vector3f up( 0, 0, 1 );
+    const vmml::Vector3f eye(1, 2, 3);
+    const vmml::Vector3f lookAt(eye + vmml::Vector3f(0, 1, 0));
+    const vmml::Vector3f up(0, 0, 1);
 
-    const vmml::Matrix4f m1( eye, lookAt, up );
+    const vmml::Matrix4f m1(eye, lookAt, up);
 
     vmml::Vector3f newEye, newLookAt, newUp;
-    m1.getLookAt( newEye, newLookAt, newUp );
-    BOOST_CHECK_EQUAL( eye, newEye );
-    BOOST_CHECK_EQUAL( lookAt, newLookAt );
-    BOOST_CHECK_EQUAL( up, newUp );
+    m1.getLookAt(newEye, newLookAt, newUp);
+    BOOST_CHECK_EQUAL(eye, newEye);
+    BOOST_CHECK_EQUAL(lookAt, newLookAt);
+    BOOST_CHECK_EQUAL(up, newUp);
 }
 
-BOOST_AUTO_TEST_CASE( nonInvertible )
+BOOST_AUTO_TEST_CASE(nonInvertible)
 {
     vmml::Matrix2f m2;
-    m2( 0, 0 ) = 0.f;
-    m2( 1, 1 ) = 0.f;
+    m2(0, 0) = 0.f;
+    m2(1, 1) = 0.f;
     const vmml::Matrix2f i2 = m2.inverse();
-    BOOST_CHECK( std::isnan( i2( 0, 1 )));
+    BOOST_CHECK(std::isnan(i2(0, 1)));
 
     vmml::Matrix3f m3;
-    m3( 0, 0 ) = 0.f;
-    m3( 1, 1 ) = 0.f;
-    m3( 2, 2 ) = 0.f;
+    m3(0, 0) = 0.f;
+    m3(1, 1) = 0.f;
+    m3(2, 2) = 0.f;
     const vmml::Matrix3f i3 = m3.inverse();
-    BOOST_CHECK( std::isnan( i3( 0, 1 )));
+    BOOST_CHECK(std::isnan(i3(0, 1)));
 
     vmml::Matrix4f m4;
-    m4( 0, 0 ) = 0.f;
-    m4( 1, 1 ) = 0.f;
-    m4( 2, 2 ) = 0.f;
-    m4( 3, 3 ) = 0.f;
+    m4(0, 0) = 0.f;
+    m4(1, 1) = 0.f;
+    m4(2, 2) = 0.f;
+    m4(3, 3) = 0.f;
     const vmml::Matrix4f i4 = m4.inverse();
-    BOOST_CHECK( std::isnan( i4( 0, 1 )));
+    BOOST_CHECK(std::isnan(i4(0, 1)));
 }
 
-BOOST_AUTO_TEST_CASE( invertible )
+BOOST_AUTO_TEST_CASE(invertible)
 {
     vmml::Matrix4f m4;
-    m4( 0, 0 ) = 0.0007f;
-    m4( 1, 1 ) = 0.0007f;
-    m4( 2, 2 ) = 0.0007f;
-    m4( 3, 3 ) = 1.0f;
-    m4( 0, 3 ) = -0.0242f;
-    m4( 1, 3 ) = -0.5168f;
-    m4( 2, 3 ) = -0.0332f;
+    m4(0, 0) = 0.0007f;
+    m4(1, 1) = 0.0007f;
+    m4(2, 2) = 0.0007f;
+    m4(3, 3) = 1.0f;
+    m4(0, 3) = -0.0242f;
+    m4(1, 3) = -0.5168f;
+    m4(2, 3) = -0.0332f;
     const vmml::Matrix4f i4 = m4.inverse();
-    BOOST_CHECK( !std::isnan( i4( 0, 1 )));
+    BOOST_CHECK(!std::isnan(i4(0, 1)));
 }
 
 // Verify code by instantiating some templates:
-template class vmml::Matrix< 2, 2, float >;
-template class vmml::Matrix< 3, 3, float >;
-template class vmml::Matrix< 4, 4, float >;
-template class vmml::Matrix< 2, 2, double >;
-template class vmml::Matrix< 3, 3, short >;
-template class vmml::Matrix< 3, 4, int >;
-template class vmml::Matrix< 4, 4, long >;
+template class vmml::Matrix<2, 2, float>;
+template class vmml::Matrix<3, 3, float>;
+template class vmml::Matrix<4, 4, float>;
+template class vmml::Matrix<2, 2, double>;
+template class vmml::Matrix<3, 3, short>;
+template class vmml::Matrix<3, 4, int>;
+template class vmml::Matrix<4, 4, long>;

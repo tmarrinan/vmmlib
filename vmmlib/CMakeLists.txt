@@ -3,7 +3,6 @@
 
 set(VMMLIB_PUBLIC_HEADERS
   aabb.hpp
-  enable_if.hpp
   frustum.hpp
   frustumCuller.hpp
   lowpassFilter.hpp

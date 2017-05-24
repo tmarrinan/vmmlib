@@ -31,25 +31,37 @@
 #define BOOST_TEST_MODULE quaternion
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE( construction )
+BOOST_AUTO_TEST_CASE(construction)
 {
     const vmml::Quaternionf q1;
-    BOOST_CHECK_EQUAL( q1, vmml::Quaternionf( 0, 0, 0, 1 ));
+    BOOST_CHECK_EQUAL(q1, vmml::Quaternionf(0, 0, 0, 1));
 
-    const vmml::Quaternionf q2( q1 );
-    BOOST_CHECK_EQUAL( q2, vmml::Quaternionf( 0, 0, 0, 1 ));
-    BOOST_CHECK_EQUAL( q2, q1 );
+    const vmml::Quaternionf q2(q1);
+    BOOST_CHECK_EQUAL(q2, vmml::Quaternionf(0, 0, 0, 1));
+    BOOST_CHECK_EQUAL(q2, q1);
 
-    const vmml::Quaternionf q3( 0.3f, vmml::Vector3f( .5f, .5f, 1.f ));
-    BOOST_CHECK_MESSAGE( q3.equals( vmml::Quaternionf( 0.0610079f, 0.0610079f,
-                                                       0.122016f, 0.988771f ),
-                                    0.00001f ), q3 );
+    BOOST_CHECK_EQUAL(q1.x(), 0);
+    BOOST_CHECK_EQUAL(q1.y(), 0);
+    BOOST_CHECK_EQUAL(q1.z(), 0);
+    BOOST_CHECK_EQUAL(q1.w(), 1);
+
+    std::stringstream str;
+    str << q1;
+    BOOST_CHECK_EQUAL(str.str(),
+                      "(          0          0          0          1 )");
+
+    const vmml::Quaternionf q3(0.3f, vmml::Vector3f(.5f, .5f, 1.f));
+    BOOST_CHECK_MESSAGE(q3.equals(vmml::Quaternionf(0.0610079f, 0.0610079f,
+                                                    0.122016f, 0.988771f),
+                                  0.00001f),
+                        q3);
 }
 
-BOOST_AUTO_TEST_CASE( rotate )
+BOOST_AUTO_TEST_CASE(rotate)
 {
-    const vmml::Quaternionf q1( 0.3f, vmml::Vector3f( .5f, .5f, 1.f ));
-    BOOST_CHECK_MESSAGE( (q1 * q1).equals(
-                vmml::Quaternionf( 0.6f, vmml::Vector3f( .5f, .5f, 1.f )), 0.00001f ),
-                         vmml::Quaternionf( 0.6f, vmml::Vector3f( .5f, .5f, 1.f )));
+    const vmml::Quaternionf q1(0.3f, vmml::Vector3f(.5f, .5f, 1.f));
+    BOOST_CHECK_MESSAGE(
+        (q1 * q1).equals(vmml::Quaternionf(0.6f, vmml::Vector3f(.5f, .5f, 1.f)),
+                         0.00001f),
+        vmml::Quaternionf(0.6f, vmml::Vector3f(.5f, .5f, 1.f)));
 }

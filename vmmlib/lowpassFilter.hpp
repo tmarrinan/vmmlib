@@ -43,46 +43,45 @@
 
 namespace vmml
 {
-template< size_t M, typename T > class LowpassFilter
+template <size_t M, typename T>
+class LowpassFilter
 {
 public:
     /** Construct a new lowpass filter with the given smoothing. */
-    LowpassFilter( const float F ) : _smoothFactor( F ) {}
+    LowpassFilter(const float F)
+        : _smoothFactor(F)
+    {
+    }
     ~LowpassFilter() {}
-
     /** @return The current filtered output value */
     const T& get() const { return _value; }
-
     /** Access the filtered value. */
     const T* operator->() const { return &_value; }
-
     /** Access the filtered value. */
     const T& operator*() const { return _value; }
-
     /** Add a value to the data set and return the filtered output */
-    const T& add( const T& value );
+    const T& add(const T& value);
 
 private:
-    std::deque< T > _data;
+    std::deque<T> _data;
     float _smoothFactor;
     T _value;
 };
 
-
-template< size_t M, typename T >
-const T& LowpassFilter< M, T >::add( const T& value )
+template <size_t M, typename T>
+const T& LowpassFilter<M, T>::add(const T& value)
 {
-    _data.push_front( value );
+    _data.push_front(value);
 
-    while( _data.size() > M )
+    while (_data.size() > M)
         _data.pop_back();
 
     // update
-    typename std::deque< T >::const_iterator i = _data.begin();
+    typename std::deque<T>::const_iterator i = _data.begin();
     _value = *i;
     double weight = _smoothFactor;
 
-    for( ++i ; i != _data.end(); ++i )
+    for (++i; i != _data.end(); ++i)
     {
         _value = _value * (1 - weight) + (*i) * weight;
         weight *= _smoothFactor;

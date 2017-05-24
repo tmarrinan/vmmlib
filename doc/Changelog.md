@@ -1,14 +1,18 @@
 # Changelog {#Changelog}
 
-# git master
+# Release 1.13 (24-05-2017)
 
-* [68](https://github.com/Eyescale/vmmlib/pull/68)
+* [68](https://github.com/Eyescale/vmmlib/pull/68):
   Fix Frustum ctor with fovy and aspect ratio where computePerspectiveMatrix()
   would return wrong results
+* [67](https://github.com/Eyescale/vmmlib/pull/67):
+  Add AABB::isInFront()
+* [63](https://github.com/Eyescale/vmmlib/pull/63):
+  Remove conversion assignment operators for vectors
 
 # Release 1.12 (09-12-2016)
 
-* [62](https://github.com/Eyescale/vmmlib/pull/62)
+* [62](https://github.com/Eyescale/vmmlib/pull/62):
   Removed a check in Matrix::computeInverse() that was discarding
   valid matrices
 

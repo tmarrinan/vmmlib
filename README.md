@@ -41,7 +41,7 @@ environments are tested:
 
 Building from source is as simple as:
 
-    git clone https://github.com/Eyescale/vmmlib.git
+    git clone --recursive https://github.com/Eyescale/vmmlib.git
     mkdir vmmlib/build
     cd vmmlib/build
     cmake -GNinja ..

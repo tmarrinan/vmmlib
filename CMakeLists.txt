@@ -2,8 +2,8 @@
 #                         Steafan Eilemann Stefan.Eilemann@epfl.ch
 
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(vmmlib VERSION 1.12.0)
-set(vmmlib_VERSION_ABI 7)
+project(vmmlib VERSION 1.13.0)
+set(vmmlib_VERSION_ABI 8)
 
 set(COMMON_PROJECT_DOMAIN ch.eyescale)
 set(VMMLIB_DESCRIPTION "Templatized C++ vector and matrix math library")
@@ -13,7 +13,10 @@ set(DPUT_HOST "ppa:eilemann/equalizer-dev")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
                               ${CMAKE_SOURCE_DIR}/CMake/common)
-include(GitExternal)
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/CMake/common/Common.cmake)
+  message(FATAL_ERROR "CMake/common missing, run: git submodule update --init")
+endif()
+
 include(Common)
 
 common_find_package(Boost COMPONENTS unit_test_framework)

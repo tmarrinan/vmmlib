@@ -33,71 +33,77 @@
 #define BOOST_TEST_MODULE frustum
 #include <boost/test/unit_test.hpp>
 
-static void _testCull( const vmml::FrustumCullerf& fc )
+static void _testCull(const vmml::FrustumCullerf& fc)
 {
-    const vmml::vector< 4, float > sphereIn( 0.f, 0.f, -10.f, 1.f );
-    const vmml::vector< 4, float > sphereOut( 0.f, 0.f, 0.f, .5f );
-    const vmml::vector< 4, float > sphereBorder( 0.f, 0.f, -1.f, 1.f );
+    const vmml::vector<4, float> sphereIn(0.f, 0.f, -10.f, 1.f);
+    const vmml::vector<4, float> sphereOut(0.f, 0.f, 0.f, .5f);
+    const vmml::vector<4, float> sphereBorder(0.f, 0.f, -1.f, 1.f);
 
-    BOOST_CHECK_EQUAL( fc.test( sphereIn ), vmml::VISIBILITY_FULL );
-    BOOST_CHECK_EQUAL( fc.test( sphereOut ), vmml::VISIBILITY_NONE );
-    BOOST_CHECK_EQUAL( fc.test( sphereBorder ),
-                       vmml::VISIBILITY_PARTIAL );
+    BOOST_CHECK_EQUAL(fc.test(sphereIn), vmml::VISIBILITY_FULL);
+    BOOST_CHECK_EQUAL(fc.test(sphereOut), vmml::VISIBILITY_NONE);
+    BOOST_CHECK_EQUAL(fc.test(sphereBorder), vmml::VISIBILITY_PARTIAL);
 
-    vmml::AABBf aabbIn( vmml::Vector3f( -1.f, -1.f, -4.f ),
-                        vmml::Vector3f( 1.f, 1.f, -2.f ));
-    vmml::AABBf aabbOut( vmml::Vector3f( -1.f, -1.f, -.5f ),
-                         vmml::Vector3f( 1.f, 1.f, 0.f ));
-    vmml::AABBf aabbBorder( vmml::Vector3f( -1.f, -1.f, -1.5f ),
-                            vmml::Vector3f( 1.f, 1.f, -.5f ));
+    std::stringstream str;
+    str << vmml::VISIBILITY_PARTIAL;
+    BOOST_CHECK_EQUAL(str.str(), "partially visible");
+    str.str("");
+    str << vmml::VISIBILITY_FULL;
+    BOOST_CHECK_EQUAL(str.str(), "fully visible    ");
 
-    BOOST_CHECK_EQUAL( fc.test( aabbIn ), vmml::VISIBILITY_FULL );
-    BOOST_CHECK_EQUAL( fc.test( aabbOut ), vmml::VISIBILITY_NONE );
-    BOOST_CHECK_EQUAL( fc.test( aabbBorder ), vmml::VISIBILITY_PARTIAL );
+    vmml::AABBf aabbIn(vmml::Vector3f(-1.f, -1.f, -4.f),
+                       vmml::Vector3f(1.f, 1.f, -2.f));
+    vmml::AABBf aabbOut(vmml::Vector3f(-1.f, -1.f, -.5f),
+                        vmml::Vector3f(1.f, 1.f, 0.f));
+    vmml::AABBf aabbBorder(vmml::Vector3f(-1.f, -1.f, -1.5f),
+                           vmml::Vector3f(1.f, 1.f, -.5f));
+
+    BOOST_CHECK_EQUAL(fc.test(aabbIn), vmml::VISIBILITY_FULL);
+    BOOST_CHECK_EQUAL(fc.test(aabbOut), vmml::VISIBILITY_NONE);
+    BOOST_CHECK_EQUAL(fc.test(aabbBorder), vmml::VISIBILITY_PARTIAL);
 }
 
-BOOST_AUTO_TEST_CASE( convert )
+BOOST_AUTO_TEST_CASE(convert)
 {
     const vmml::Frustumf f1;
-    const vmml::Frustumf f2( f1.computePerspectiveMatrix( ));
-    BOOST_CHECK_MESSAGE( f1.equals( f2, 0.0001f ), f2 );
+    const vmml::Frustumf f2(f1.computePerspectiveMatrix());
+    BOOST_CHECK_MESSAGE(f1.equals(f2, 0.0001f), f2);
 }
 
-BOOST_AUTO_TEST_CASE( base )
+BOOST_AUTO_TEST_CASE(base)
 {
-    const vmml::Frustumf frustum( -1.f, 1., -1.f, 1., 1.f, 100.f );
-    const vmml::Matrix< 4, 4, float > mvp = frustum.computePerspectiveMatrix();
+    const vmml::Frustumf frustum(-1.f, 1., -1.f, 1., 1.f, 100.f);
+    const vmml::Matrix<4, 4, float> mvp = frustum.computePerspectiveMatrix();
 
-    const vmml::FrustumCullerf fc( mvp );
-    _testCull( fc );
+    const vmml::FrustumCullerf fc(mvp);
+    _testCull(fc);
 
     //   e_____f
     //  /     /|
     // | a b | |
     // | c d |/h
     //  -----
-    const vmml::Vector3f a( -1.f,  1.f, -1.f );
-    const vmml::Vector3f b(  1.f,  1.f, -1.f );
-    const vmml::Vector3f c( -1.f, -1.f, -1.f );
-    const vmml::Vector3f d(  1.f, -1.f, -1.f );
-    const vmml::Vector3f e( -100.f,  100.f, -100.f );
-    const vmml::Vector3f f(  100.f,  100.f, -100.f );
-    const vmml::Vector3f g( -100.f, -100.f, -100.f );
-    const vmml::Vector3f h(  100.f, -100.f, -100.f );
+    const vmml::Vector3f a(-1.f, 1.f, -1.f);
+    const vmml::Vector3f b(1.f, 1.f, -1.f);
+    const vmml::Vector3f c(-1.f, -1.f, -1.f);
+    const vmml::Vector3f d(1.f, -1.f, -1.f);
+    const vmml::Vector3f e(-100.f, 100.f, -100.f);
+    const vmml::Vector3f f(100.f, 100.f, -100.f);
+    const vmml::Vector3f g(-100.f, -100.f, -100.f);
+    const vmml::Vector3f h(100.f, -100.f, -100.f);
 
-    const vmml::FrustumCullerf fc2( a, b, c, d, e, f, g, h );
-    _testCull( fc2 );
+    const vmml::FrustumCullerf fc2(a, b, c, d, e, f, g, h);
+    _testCull(fc2);
 }
 
-BOOST_AUTO_TEST_CASE( fovy_to_projection )
+BOOST_AUTO_TEST_CASE(fovy_to_projection)
 {
-    const vmml::Frustumf frustum( 45.f, 4.f/3.f, 0.01f, 10.f );
+    const vmml::Frustumf frustum(45.f, 4.f / 3.f, 0.01f, 10.f);
     const auto projection = frustum.computePerspectiveMatrix();
 
     // same as glm::perspective(M_PI_4, 4.f/3., 0.01, 10.)
-    BOOST_CHECK_CLOSE(projection(0,0), -1.81066f, 0.0001f );
-    BOOST_CHECK_CLOSE(projection(1,1), -2.414214f, 0.0001f );
-    BOOST_CHECK_CLOSE(projection(2,2), -1.002002f, 0.0001f );
-    BOOST_CHECK_CLOSE(projection(2,3), -0.02002002f, 0.0001f );
-    BOOST_CHECK_CLOSE(projection(3,2), -1.f, 0.0001f );
+    BOOST_CHECK_CLOSE(projection(0, 0), -1.81066f, 0.0001f);
+    BOOST_CHECK_CLOSE(projection(1, 1), -2.414214f, 0.0001f);
+    BOOST_CHECK_CLOSE(projection(2, 2), -1.002002f, 0.0001f);
+    BOOST_CHECK_CLOSE(projection(2, 3), -0.02002002f, 0.0001f);
+    BOOST_CHECK_CLOSE(projection(3, 2), -1.f, 0.0001f);
 }

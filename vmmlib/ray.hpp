@@ -44,11 +44,12 @@
 
 namespace vmml
 {
-template< typename T > class Ray
+template <typename T>
+class Ray
 {
 public:
-    typedef vector< 3, T > vec3;
-    typedef vector< 4, T > vec4;
+    typedef vector<3, T> vec3;
+    typedef vector<4, T> vec4;
 
     /**
      * Constructor
@@ -56,34 +57,30 @@ public:
      * @param origin Ray origin
      * @param direction Ray direction
      */
-    Ray( const vec3& origin, const vec3& direction )
-        : _origin ( origin )
-        , _direction ( vmml::normalize( direction ))
-    {}
+    Ray(const vec3& origin, const vec3& direction)
+        : _origin(origin)
+        , _direction(vmml::normalize(direction))
+    {
+    }
     ~Ray() {}
-
     /**
      * Ray-Sphere Intersection.
      * Optimized solution from "Real-time Rendering 3rd Edition"
      *
-     * @param center Sphere center
-     * @param radius Sphere radius
-     * @param distance Intersection distance
+     * @param sphere x,y,z center + radius of sphere
      *
      * @return The distance from the ray origin to the intersection, or a
      *         negative value if there is no intersection.
      */
-    T test( const vec4& sphere ) const;
+    T test(const vec4& sphere) const;
 
 private:
     const vec3 _origin;
     const vec3 _direction;
-
 };
 
-
-template< typename T >
-T Ray< T >::test( const vec4& sphere ) const
+template <typename T>
+T Ray<T>::test(const vec4& sphere) const
 {
     const vec3 center = vec3(sphere.x(), sphere.y(), sphere.z());
     const T radius = sphere.w();
@@ -95,19 +92,19 @@ T Ray< T >::test( const vec4& sphere ) const
     const T sqRadius = radius * radius;
 
     /** Sphere behind the ray origin and ray origin outside the sphere */
-    if( vecProjection < 0 && sqDistance > sqRadius )
+    if (vecProjection < 0 && sqDistance > sqRadius)
         return -1.f;
 
     /** Squared distance from sphere center to the projection */
     const T sqCenterToProj = sqDistance - vecProjection * vecProjection;
 
-    if( sqCenterToProj > sqRadius )
+    if (sqCenterToProj > sqRadius)
         return -1.f;
 
     /** Distance from the sphere center to the surface along the ray direction*/
-    const T distSurface = sqrt( sqRadius - sqCenterToProj );
+    const T distSurface = sqrt(sqRadius - sqCenterToProj);
 
-    if(sqDistance > sqRadius)
+    if (sqDistance > sqRadius)
         return vecProjection - distSurface;
 
     return vecProjection + distSurface;
