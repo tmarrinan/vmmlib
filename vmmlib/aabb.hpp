@@ -43,6 +43,17 @@ void byteswap(T&);
 
 namespace vmml
 {
+template <typename T> class AABB;
+}
+namespace staticjson
+{
+class ObjectHandler;
+template <typename U>
+void init(vmml::AABB<U>*, ObjectHandler*);
+}
+
+namespace vmml
+{
 /**
  * An axis-aligned bounding box.
  *
@@ -121,6 +132,8 @@ private:
     vector<3, T> _max;
     template <class U>
     friend void lunchbox::byteswap(U&);
+    template <typename U>
+    friend void staticjson::init(AABB<U>*, staticjson::ObjectHandler*);
 };
 
 template <typename T>
