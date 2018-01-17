@@ -43,7 +43,8 @@ void byteswap(T&);
 
 namespace vmml
 {
-template <typename T> class AABB;
+template <typename T>
+class AABB;
 }
 namespace staticjson
 {
@@ -132,8 +133,8 @@ private:
     vector<3, T> _max;
     template <class U>
     friend void lunchbox::byteswap(U&);
-    template <typename U>
-    friend void staticjson::init(AABB<U>*, staticjson::ObjectHandler*);
+    friend void staticjson::init(AABB<float>*, staticjson::ObjectHandler*);
+    friend void staticjson::init(AABB<double>*, staticjson::ObjectHandler*);
 };
 
 template <typename T>
