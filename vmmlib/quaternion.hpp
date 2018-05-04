@@ -142,7 +142,6 @@ public:
         return os;
     }
 
-private:
     T array[4];
 };
 }
