@@ -1,5 +1,20 @@
 # Changelog {#Changelog}
 
+# Release 1.14 (20-03-2019)
+
+* [77](https://github.com/Eyescale/vmmlib/pull/77):
+  Added a rotate function to the quaternion class for rotating vectors
+* [76](https://github.com/Eyescale/vmmlib/pull/76):
+  Made AABB attributes public for ICC compiler
+* [75](https://github.com/Eyescale/vmmlib/pull/75):
+  Public array for quaternion to align with vectors
+* [74](https://github.com/Eyescale/vmmlib/pull/74):
+  Fix non-working friend declaration
+* [73](https://github.com/Eyescale/vmmlib/pull/73):
+  Enable serialization support using StaticJSON
+* [72](https://github.com/Eyescale/vmmlib/pull/72):
+  Some Windows-related fixes.
+
 # Release 1.13 (24-05-2017)
 
 * [68](https://github.com/Eyescale/vmmlib/pull/68):
